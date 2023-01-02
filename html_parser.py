@@ -22,12 +22,15 @@ def _init_browser():
 
 def _get_html(browser, group: str, date: str) -> str:
     # Finding input fields
-    group_element = browser.find_element(By.ID, "select-state-selectized")
-    date_element = browser.find_element(By.CLASS_NAME, "form-control")
+    group_element = browser.find_element(By.ID, GROUP_INPUT_ID)
+    date_element = browser.find_element(By.CLASS_NAME, DATE_INPUT_CLASS_NAME)
+    submit_button_element = browser.find_element(By.CSS_SELECTOR, SUBMIT_BUTTON_CSS_SELECTOR)
 
     # Filling input fields
     group_element.send_keys(group + Keys.RETURN)
-    date_element.send_keys(date + Keys.RETURN)
+    date_element.send_keys(date)
+    # Pressing the button for submit input
+    browser.execute_script("arguments[0].click();", submit_button_element)
 
     wait = WebDriverWait(browser, 10)
     wait.until(expected_conditions.visibility_of(browser.find_element(by=By.CLASS_NAME, value="schedule")))
